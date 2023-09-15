@@ -7,7 +7,7 @@ import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
-import { loginUser } from '../services/user-services';
+import { loginUser } from '../services/user-service';
 
 export function Login() {
     const { handleSubmit, register, formState: { errors } } = useForm();
@@ -48,10 +48,10 @@ export function Login() {
                         label="E-mail"
                         type="text"
                         placeholder="Insira seu e-mail"
-                        error={errors.email}
+                        error={errors.Email}
                         required={true}
-                        name="email"
-                        validations={register('email', {
+                        name="Email"
+                        validations={register('Email', {
                             required: {
                                 value: true,
                                 message: 'E-mail é obrigatório'
@@ -67,10 +67,10 @@ export function Login() {
                         label="Senha"
                         type="password"
                         placeholder="Insira sua senha"
-                        error={errors.password}
+                        error={errors.Senha}
                         required={true}
-                        name="password"
-                        validations={register('password', {
+                        name="Senha"
+                        validations={register('Senha', {
                             required: {
                                 value: true,
                                 message: 'Senha é obrigatório'

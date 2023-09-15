@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
-import { fetchAllHorarios, createHorario, updateHorario, deleteHorario } from "../services/horarioService";
+import { getHorarios, createHorario, updateHorario, deleteHorario } from "../services/horario-service";
 
 export function Horario() {
   const [horarios, setHorarios] = useState([]);
@@ -12,7 +12,7 @@ export function Horario() {
   const { handleSubmit, register, formState: { errors } } = useForm();
 
   const refreshHorarios = async () => {
-    const response = await fetchAllHorarios();
+    const response = await getHorarios();
     if (response.status === 200) {
       setHorarios(response.data);
     }

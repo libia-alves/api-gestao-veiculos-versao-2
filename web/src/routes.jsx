@@ -1,11 +1,14 @@
+
+
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { Foods } from "./pages/Foods";
-import { Customers } from "./pages/Customers";
-import { Home } from "./pages/Home";
-
+import { Veiculos } from "./pages/Veiculo"; // Importe a página de veículos
+import { Escolas } from "./pages/Escola"; // Importe a página de escolas
+import { Horarios } from "./pages/Horario"; // Importe a página de horários
+import { Rotas } from "./pages/Rota"; // Importe a página de rotas
+import { Users } from "./pages/User"; // Importe a página de usuários
 
 import { isAuthenticated } from './utils/is-authenticated';
 
@@ -31,33 +34,55 @@ export function Navigations() {
                     path="/home"
                     element={(
                         <PrivateRoute>
-                            <Home />
+                            {/* Aqui você pode definir a página inicial após o login */}
                         </PrivateRoute>
                     )}
                 />
 
                 <Route
-                    path="/foods"
+                    path="/veiculos"
                     element={(
                         <PrivateRoute>
-                            <Foods />
+                            <Veiculos />
                         </PrivateRoute>
                     )}
                 />
-
 
                 <Route
-                    path="/customers"
+                    path="/escolas"
                     element={(
                         <PrivateRoute>
-                            <Customers />
+                            <Escolas />
                         </PrivateRoute>
                     )}
                 />
 
-              
+                <Route
+                    path="/horarios"
+                    element={(
+                        <PrivateRoute>
+                            <Horarios />
+                        </PrivateRoute>
+                    )}
+                />
 
+                <Route
+                    path="/rotas"
+                    element={(
+                        <PrivateRoute>
+                            <Rotas />
+                        </PrivateRoute>
+                    )}
+                />
 
+                <Route
+                    path="/users"
+                    element={(
+                        <PrivateRoute>
+                            <Users />
+                        </PrivateRoute>
+                    )}
+                />
             </Routes>
         </BrowserRouter>
     )
