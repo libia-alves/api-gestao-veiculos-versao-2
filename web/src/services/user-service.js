@@ -26,7 +26,8 @@ export async function updateUser(data) {
       Data_Nascimento: data.Data_Nascimento,
       Celular: data.Celular,
       CPF: data.CPF,
-      Endereço: data.Endereço
+      Endereço: data.Endereço,
+      Senha: data.Senha
       // Adicione mais campos de atualização conforme necessário
     });
     return result;
@@ -43,7 +44,8 @@ export async function createUser(data) {
       Data_Nascimento: data.Data_Nascimento,
       Celular: data.Celular,
       CPF: data.CPF,
-      Endereço: data.Endereço
+      Endereço: data.Endereço,
+      Senha: data.Senha
       // Adicione mais campos de criação conforme necessário
     });
     return result;
@@ -56,13 +58,14 @@ export async function createUser(data) {
 
 
 export async function registerUser(data) {
+  console.log(data)
     const result = await api.post('/register', {
       Nome: data.Nome,
       Email: data.Email,
       Data_Nascimento: data.Data_Nascimento,
       Celular: data.Celular,
-      CPF: data.cpf,
-      Endereco: data.Endereco,
+      CPF: data.CPF,
+      Endereço: data.Endereço,
       Senha: data.Senha
     });
     sessionStorage.setItem('token', JSON.stringify(result.data.accessToken));

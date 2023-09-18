@@ -7,9 +7,10 @@ const { UserModel } = require('../models/user-model');
 class UserController {
     async register(request, response) {
         const httpHelper = new HttpHelper(response);
+        console.log(request.body)
         try {
-            const { Nome, Email, Data_nascimento, Celular, CPF, Endereço, Senha } = request.body;
-            if (!Nome || !Email || !Data_nascimento || !Celular || !CPF || !Endereço || !Senha) {
+            const { Nome, Email, Data_Nascimento, Celular, CPF, Endereço, Senha } = request.body;
+            if (!Nome || !Email || !Data_Nascimento || !Celular || !CPF || !Endereço || !Senha) {
                 return httpHelper.badRequest('Todos os campos são obrigatórios!');
             }
             const userAlreadyExists = await UserModel.findOne({ where: { Email } });
@@ -21,8 +22,8 @@ class UserController {
             const user = await UserModel.create({
                 Nome,
                 Email,
-                Data_Nascimento:Data_nascimento,
-                Celular,
+                Data_Nascimento,
+                Celular:Number(Celular),
                 CPF,
                 Endereço,
                 Senha: SenhaHashed,

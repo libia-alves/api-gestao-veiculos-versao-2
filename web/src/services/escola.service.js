@@ -1,47 +1,69 @@
 import { api } from "./api";
 
 export async function getEscolas() {
-  try {
-    const result = await api.get('/escolas');
+ 
+    const acessToken = sessionStorage.getItem('token');
+    const result = await api.get('/escola',{
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+
+    }
+    
+    );
     return result;
-  } catch (error) {
-    throw error;
-  }
+
+
 }
 
 export async function deleteEscola(id) {
-  try {
-    const result = await api.delete(`/escolas/${id}`);
+    const acessToken = sessionStorage.getItem('token');
+    const result = await api.delete(`/escola/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+
+    });
     return result;
-  } catch (error) {
-    throw error;
-  }
+  
 }
 
 export async function updateEscola(data) {
-  try {
-    const result = await api.put(`/escolas/${data.id}`, {
+  const acessToken = sessionStorage.getItem('token');
+    const result = await api.put(`/escola/${data.id}`,{
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+
+    }, {
       Nome: data.Nome,
       Endereço_Completo: data.Endereço_Completo,
-      Contato_Escola: data.Contato_Escola
+      Contato_Escola: data.Contato_Escola,
+      Pontos_Embarque_Desembarque: data.Pontos_Embarque_Desembarque,
+      Informações_Motoristas: data.Informações_Motoristas,
+      id_Gestor: data.id_Gestor
       // Adicione mais campos de atualização conforme necessário
     });
     return result;
-  } catch (error) {
-    throw error;
-  }
+  
 }
 
 export async function createEscola(data) {
-  try {
-    const result = await api.post('/escolas', {
+  const acessToken = sessionStorage.getItem('token');
+    const result = await api.post('/escola',{
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+
+    }, {
       Nome: data.Nome,
       Endereço_Completo: data.Endereço_Completo,
-      Contato_Escola: data.Contato_Escola
-      // Adicione mais campos de criação conforme necessário
+      Contato_Escola: data.Contato_Escola,
+      Pontos_Embarque_Desembarque: data.Pontos_Embarque_Desembarque,
+      Informações_Motoristas: data.Informações_Motoristas,
+      id_Gestor: data.id_Gestor
+      
     });
     return result;
-  } catch (error) {
-    throw error;
-  }
+  
 }

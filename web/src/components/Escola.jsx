@@ -18,7 +18,10 @@ export function Escola(props) {
         <Card.Title><strong>Nome: </strong>{props.escola.Nome}</Card.Title>
         <Card.Text><strong>Endereço: </strong>{props.escola.Endereço_Completo}</Card.Text>
         <Card.Text><strong>Contato: </strong>{props.escola.Contato_Escola}</Card.Text>
-        {/* Adicione mais informações da escola aqui */}
+        <Card.Title><strong>Pontos_Embarque_Desembarque: </strong>{props.escola.Pontos_Embarque_Desembarque}</Card.Title>
+        <Card.Text><strong>Informações_Motoristas: </strong>{props.escola.Informações_Motoristas}</Card.Text>
+        <Card.Text><strong>id_Gestor: </strong>{props.escola.id_Gestor}</Card.Text>
+
         <Row xs="auto" className="d-flex justify-content-end">
           <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
           <Button variant="outline-danger" className="ms-3" onClick={props.removeEscola}>Apagar</Button>
@@ -83,7 +86,62 @@ export function Escola(props) {
               })}
             />
 
-            {/* Adicione mais campos de edição conforme necessário */}
+
+            <Input
+              className="mb-3"
+              type='text'
+              defaultValue={props.escola.Pontos_Embarque_Desembarque}
+              label='Pontos de embarque e desembarque'
+              placeholder='Insira as informações dos pontos de embarque e desembarque'
+              required={true}
+              name='Pontos_Embarque_Desembarque'
+              error={errors.Pontos_Embarque_Desembarque}
+              validations={register('Pontos_Embarque_Desembarque', {
+                required: {
+                  value: true,
+                  message: 'Pontos de Embarque Desembarque são obrigatórios.'
+                }
+              })}
+            />
+
+            <Input
+              className="mb-3"
+              type='text'
+              defaultValue={props.escola.Informações_Motoristas}
+              label='Informações para os Motoristas'
+              placeholder='Insira as informações para os motoristas que desejar'
+              required={true}
+              name='Informações_Motoristas'
+              error={errors.Informações_Motoristas}
+              validations={register('Informações_Motoristas', {
+                required: {
+                  value: true,
+                  message: 'Informações para os Motoristas são obrigatórios.'
+                }
+              })}
+            />
+            <Input
+              className="mb-3"
+              type='text'
+              defaultValue={props.escola.id_Gestor}
+              label='id_Gestor'
+              placeholder='Insira as informações de id_Gestor'
+              required={true}
+              name='id_Gestor'
+              error={errors.id_Gestor}
+              validations={register('id_Gestor', {
+                required: {
+                  value: true,
+                  message: 'id_Gestor é obrigatório.'
+                }
+              })}
+            />
+
+
+
+
+          
+
           </Modal.Body>
 
           <Modal.Footer>

@@ -9,6 +9,8 @@ import { Escolas } from "./pages/Escola"; // Importe a página de escolas
 import { Horarios } from "./pages/Horario"; // Importe a página de horários
 import { Rotas } from "./pages/Rota"; // Importe a página de rotas
 import { Users } from "./pages/User"; // Importe a página de usuários
+import { Home } from "./pages/Home"; 
+
 
 import { isAuthenticated } from './utils/is-authenticated';
 
@@ -34,7 +36,7 @@ export function Navigations() {
                     path="/home"
                     element={(
                         <PrivateRoute>
-                            {/* Aqui você pode definir a página inicial após o login */}
+                            <Home />
                         </PrivateRoute>
                     )}
                 />

@@ -54,7 +54,10 @@ export function Escolas() {
         id: data.id,
         Nome: data.Nome,
         Endereço_Completo: data.Endereço_Completo,
-        Contato_Escola: data.Contato_Escola
+        Contato_Escola: data.Contato_Escola,
+        Pontos_Embarque_Desembarque: data.Pontos_Embarque_Desembarque,
+        Informações_Motoristas: data.Informações_Motoristas,
+        id_Gestor: data.id_Gestor
         // Adicione mais campos de edição conforme necessário
       });
       await findEscolas();
@@ -141,6 +144,54 @@ export function Escolas() {
                 }
               })}
             />
+
+          <Input
+              className="mb-3"
+              type='text'
+              label='Pontos_Embarque_Desembarque'
+              placeholder='Insira os pontos de embarque e desembarque'
+              required={true}
+              name='Pontos_Embarque_Desembarque'
+              error={errors.Pontos_Embarque_Desembarque}
+              validations={register('Pontos_Embarque_Desembarque', {
+                required: {
+                  value: true,
+                  message: 'Pontos de Embarque e Desembarque é obrigatório.'
+                }
+              })}
+            />
+          <Input
+              className="mb-3"
+              type='text'
+              label='Informações_Motoristas'
+              placeholder='Insira as Informações_Motoristas'
+              required={true}
+              name='Informações_Motoristas'
+              error={errors.Informações_Motoristas}
+              validations={register('Informações_Motoristas', {
+                required: {
+                  value: true,
+                  message: 'Informação para os motoristas é obrigatório.'
+                }
+              })}
+            />
+
+        <Input
+              className="mb-3"
+              type='text'
+              label='id_Gestor'
+              placeholder='Insira o id_Gestor'
+              required={true}
+              name='id_Gestor'
+              error={errors.id_Gestor}
+              validations={register('id_Gestor', {
+                required: {
+                  value: true,
+                  message: 'id_Gestor é obrigatório.'
+                }
+              })}
+            />
+
 
             {/* Adicione mais campos de adição conforme necessário */}
           </Modal.Body>

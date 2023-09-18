@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Modal, Form, Row } from "react-bootstrap";
+import { Container, Button, Modal, Form, Row , Col} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Rota } from "../components/Rota";

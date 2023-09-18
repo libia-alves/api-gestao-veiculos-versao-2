@@ -10,16 +10,18 @@ import { Modal } from '../components/Modal';
 import { registerUser } from "../services/user-service";
 
 export function Register() {
-    const { handleSubmit, register, formState: { errors } } = useForm({mode:'all'});
+    const { handleSubmit, register, formState: { errors } } = useForm({ mode: 'all' });
     const [result, setResult] = useState(null);
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
+        console.log(data)
         try {
             const user = await registerUser(data);
             setResult(user);
             navigate('/home');
         } catch (error) {
+            console.log(error)
             setResult({
                 title: 'Houve um erro no cadastro!',
                 message: error.response.data.error
@@ -45,23 +47,43 @@ export function Register() {
                 <Col>
                     <Input
                         className="mb-4"
-                        label="E-mail"
+                        label="Email"
                         type="text"
-                        placeholder="Insira seu e-mail"
+                        placeholder="Insira seu Email"
                         error={errors.Email}
                         required={true}
                         name="Email"
                         validations={register('Email', {
                             required: {
                                 value: true,
-                                message: 'E-mail é obrigatório'
+                                message: 'Email é obrigatório'
                             },
                             pattern: {
                                 value: /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i,
-                                message: 'E-mail inválido!'
+                                message: 'Email inválido!'
                             }
                         })}
                     />
+
+                    <Input
+                        className="mb-4"
+                        label="Nome"
+                        type="text"
+                        placeholder="Insira seu Nome"
+                        error={errors.Nome}
+                        required={true}
+                        name="Nome"
+                        validations={register('Nome', {
+                            required: {
+                                value: true,
+                                message: 'Nome é obrigatório'
+                            },
+
+                        })}
+                    />
+
+
+
 
 
                     <Input
@@ -77,10 +99,10 @@ export function Register() {
                                 value: true,
                                 message: 'Data de nascimento é obrigatória'
                             },
-                            
+
                         })}
                     />
-                    
+
                     <Input
                         className="mb-4"
                         label="Celular"
@@ -101,14 +123,14 @@ export function Register() {
                         className="mb-4"
                         label="CPF"
                         type="text"
-                        placeholder="Insira seu cpf"
-                        error={errors.cpf}
+                        placeholder="Insira seu CPF"
+                        error={errors.CPF}
                         required={true}
-                        name="cpf"
-                        validations={register('cpf', {
+                        name="CPF"
+                        validations={register('CPF', {
                             required: {
                                 value: true,
-                                message: 'cpf é obrigatório'
+                                message: 'CPF é obrigatório'
                             }
                         })}
                     />
@@ -118,10 +140,10 @@ export function Register() {
                         label="Endereço"
                         type="text"
                         placeholder="Insira seu endereço"
-                        error={errors.Endereco}
+                        error={errors.Endereço}
                         required={true}
-                        name="Endereco"
-                        validations={register('Endereco', {
+                        name="Endereço"
+                        validations={register('Endereço', {
                             required: {
                                 value: true,
                                 message: 'endereço é obrigatório'
@@ -132,7 +154,7 @@ export function Register() {
 
 
 
-                    
+
                     <Input
                         className="mb-4"
                         label="Senha"
