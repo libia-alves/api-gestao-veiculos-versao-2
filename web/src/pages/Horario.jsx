@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Modal, Form, Row } from "react-bootstrap";
+import { Container, Button, Modal, Form, Row, Col} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Horario } from "../components/Horario";
@@ -32,6 +32,7 @@ export function Horarios() {
     try {
       await deleteHorario(id);
       await findHorarios();
+      debugger
     } catch (error) {
       console.error(error);
     }
@@ -39,6 +40,7 @@ export function Horarios() {
 
   async function addHorario(data) {
     try {
+
       await createHorario(data);
       setIsCreated(false);
       await findHorarios();
@@ -48,6 +50,7 @@ export function Horarios() {
   }
 
   async function editHorario(data) {
+
     try {
       await updateHorario({
         id: data.id,
@@ -77,6 +80,7 @@ export function Horarios() {
                 removeHorario={async () => await removeHorario(horario.id)}
                 editHorario={editHorario}
               />
+              
             ))
           : <p className="text-center">Não existe nenhum horário cadastrado!</p>}
       </Col>
@@ -91,7 +95,7 @@ export function Horarios() {
           <Modal.Body>
             <Input
               className="mb-3"
-              type='text'
+              type='number'
               label='Horário de Partida'
               placeholder='Insira o horário de partida'
               required={true}
@@ -107,7 +111,7 @@ export function Horarios() {
             
             <Input
               className="mb-3"
-              type='text'
+              type='number'
               label='Horário de Chegada'
               placeholder='Insira o horário de chegada'
               required={true}

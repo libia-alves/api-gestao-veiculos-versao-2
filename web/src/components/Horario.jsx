@@ -32,8 +32,8 @@ export function Horario() {
 
   const handleEditHorario = async (data) => {
     if (!selectedHorario) return;
-
-    const response = await updateHorario(selectedHorario.id, data);
+    data.id = selectedHorario.id;
+    const response = await updateHorario(data);
     if (response.status === 200) {
       refreshHorarios();
       setIsModalOpen(false);
@@ -70,7 +70,7 @@ export function Horario() {
           <Modal.Body>
             <Input
               className="mb-3"
-              type="text"
+              type="number"
               defaultValue={selectedHorario ? selectedHorario.Horario_Partida : ""}
               label="Horário de Partida"
               placeholder="Insira o horário de partida"
@@ -86,7 +86,7 @@ export function Horario() {
             />
             <Input
               className="mb-3"
-              type="text"
+              type="number"
               defaultValue={selectedHorario ? selectedHorario.Horario_Chegada : ""}
               label="Horário de Chegada"
               placeholder="Insira o horário de chegada"

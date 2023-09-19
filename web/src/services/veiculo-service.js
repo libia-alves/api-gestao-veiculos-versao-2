@@ -1,45 +1,68 @@
 import { api } from "./api";
 
 export async function getVeiculos() {
-    try {
-        const response = await api.get("/veiculos");
+    const acessToken = sessionStorage.getItem('token');
+        const response = await api.get('/veiculo', {
+            headers: {
+                'Authorization': `Bearer ${JSON.parse(acessToken)}`
+              }
+        });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+   
 }
 
+
+export async function getUsers() {
+  const acessToken = sessionStorage.getItem('token');
+    const result = await api.get('/user', {
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+    });
+    return result;
+  
+}
+
+
 export async function getVeiculoById(id) {
-    try {
-        const response = await api.get(`/veiculos/${id}`);
+    const acessToken = sessionStorage.getItem('token');
+        const response = await api.get(`/veiculos/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${JSON.parse(acessToken)}`
+              }
+        });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+    
 }
 
 export async function createVeiculo(veiculoData) {
-    try {
-        const response = await api.post("/veiculos", veiculoData);
+    const acessToken = sessionStorage.getItem('token');
+        const response = await api.post('/veiculos', {
+            headers: {
+                'Authorization': `Bearer ${JSON.parse(acessToken)}`
+              }
+        }, veiculoData);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+   
 }
 
 export async function updateVeiculo(id, veiculoData) {
-    try {
-        const response = await api.put(`/veiculos/${id}`, veiculoData);
+    const acessToken = sessionStorage.getItem('token');
+        const response = await api.put(`/veiculo/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${JSON.parse(acessToken)}`
+              }
+        }, veiculoData);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+    
 }
 
 export async function deleteVeiculo(id) {
-    try {
-        await api.delete(`/veiculos/${id}`);
-    } catch (error) {
-        throw error;
-    }
+    const acessToken = sessionStorage.getItem('token');
+        await api.delete(`/veiculo/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${JSON.parse(acessToken)}`
+              }
+        });
+    
 }

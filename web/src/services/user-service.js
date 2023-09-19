@@ -1,26 +1,36 @@
 import { api } from "./api";
 
 export async function getUsers() {
-  try {
-    const result = await api.get('/users');
+  const acessToken = sessionStorage.getItem('token');
+    const result = await api.get('/user', {
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+    });
     return result;
-  } catch (error) {
-    throw error;
-  }
+  
 }
 
+
+
 export async function deleteUser(id) {
-  try {
-    const result = await api.delete(`/users/${id}`);
+  const acessToken = sessionStorage.getItem('token');
+    const result = await api.delete(`/user/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+    });
     return result;
-  } catch (error) {
-    throw error;
-  }
+  
 }
 
 export async function updateUser(data) {
-  try {
-    const result = await api.put(`/users/${data.id}`, {
+  const acessToken = sessionStorage.getItem('token');
+    const result = await api.put(`/user/${data.id}`, {
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+    }, {
       Nome: data.Nome,
       Email: data.Email,
       Data_Nascimento: data.Data_Nascimento,
@@ -31,14 +41,16 @@ export async function updateUser(data) {
       // Adicione mais campos de atualização conforme necessário
     });
     return result;
-  } catch (error) {
-    throw error;
-  }
+
 }
 
 export async function createUser(data) {
-  try {
+  const acessToken = sessionStorage.getItem('token');
     const result = await api.post('/register', {
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(acessToken)}`
+      }
+    }, {
       Nome: data.Nome,
       Email: data.Email,
       Data_Nascimento: data.Data_Nascimento,
@@ -49,15 +61,14 @@ export async function createUser(data) {
       // Adicione mais campos de criação conforme necessário
     });
     return result;
-  } catch (error) {
-    throw error;
-  }
+  
 }
 
 
 
 
 export async function registerUser(data) {
+  
   console.log(data)
     const result = await api.post('/register', {
       Nome: data.Nome,
