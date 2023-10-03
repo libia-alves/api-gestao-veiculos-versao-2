@@ -1,117 +1,368 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Table, Modal } from "react-bootstrap";
+import { Button, Container, Col, Modal, Form, Row, FormSelect } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Veiculo } from "../components/Veiculo"; // Certifique-se de que o nome do componente esteja correto
+import { Header } from "../components/Header";
+import { Input } from '../components/Input';
 
-import { getVeiculos, deleteVeiculo, createVeiculo, updateVeiculo } from "../services/veiculo-service";
-import { VeiculoForm } from "../components/VeiculoForm"; // Importe o componente de formulário
 
-export function Veiculos (){
+import { createVeiculo, deleteVeiculo, getVeiculos, updateVeiculo } from "../services/veiculo-service";
+import { getEscolas } from "../services/escola-service";
+
+import { getRotas } from "../services/rota-service";
+import { getHorarios } from "../services/horario-service";
+
+
+export function Veiculos() {
   const [veiculos, setVeiculos] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editVeiculo, setEditVeiculo] = useState(null);
+  const [isCreated, setIsCreated] = useState(false);
+  const { handleSubmit, register, formState: { errors } } = useForm();
+  const navigate = useNavigate();
+
+
+
+
+
+  // Supondo que você tenha uma função que busca a lista de escolas
+  // e que essa função retorne um array de objetos com os campos Nome e id.
+  const [escolas, setEscolas] = useState([]);
+  const [horario, setHorario] = useState([]);
+  const [rota, setRota] = useState([]);
+
+
+
+
 
   useEffect(() => {
-    fetchVeiculos();
+    findVeiculos();
+    findEscolas();
+    findHorario();
+    findRota();
+    // eslint-disable-next-line
   }, []);
 
-  const fetchVeiculos = async () => {
+  async function findVeiculos() {
     try {
-      const response = await getVeiculos();
-      setVeiculos(response.data);
+      const result = await getVeiculos();
+      setVeiculos(result.data);
     } catch (error) {
       console.error(error);
+      navigate('/');
     }
-  };
+  }
 
-  const handleDelete = async (id) => {
+  async function findEscolas() {
+    try {
+      const result = await getEscolas();
+      setEscolas(result.data);
+    } catch (error) {
+      console.error(error);
+      navigate('/');
+    }
+  }
+
+  async function findRota() {
+    try {
+      const result = await getRotas();
+      setRota(result.data);
+    } catch (error) {
+      console.error(error);
+      navigate('/');
+    }
+  }
+
+  async function findHorario() {
+    try {
+      const result = await getHorarios();
+      setHorario(result.data);
+    } catch (error) {
+      console.error(error);
+      navigate('/');
+    }
+  }
+
+
+
+
+  async function removeVeiculo(id) {
     try {
       await deleteVeiculo(id);
-      fetchVeiculos();
+      alert("Cadastro deletado com sucesso!");
+      await findVeiculos();
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
-  const handleCreate = async (formData) => {
+  async function addVeiculo(data) {
     try {
-      await createVeiculo(formData);
-      fetchVeiculos();
-      setShowForm(false); // Feche o formulário após a criação
+      console.log(data)
+      await createVeiculo(data);
+      setIsCreated(false);
+      alert("Cadastro feito com sucesso!");
+      await findVeiculos();
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
-  const handleEdit = (veiculo) => {
-    setEditVeiculo(veiculo);
-    setShowForm(true); // Abra o formulário de edição com os dados do veículo
-  };
-
-  const handleUpdate = async (formData) => {
-    if (!editVeiculo) return;
-
+  async function editVeiculo(data) {
     try {
-      await updateVeiculo(editVeiculo.id, formData);
-      fetchVeiculos();
-      setShowForm(false); // Feche o formulário após a edição
+      const response = await updateVeiculo({
+        id: data.id,
+        Tipo_Veiculo: data.Tipo_Veiculo,
+        Numero_Placa: data.Numero_Placa,
+        Capacidade_Máxima_Passageiros: data.Capacidade_Máxima_Passageiros,
+        Contato_Motorista: data.Contato_Motorista,
+        id_Rotas: data.id_Rotas,
+        id_Horario: data.id_Horario,
+        id_Escolas: data.id_Escolas,
+        // Adicione mais campos de edição conforme necessário
+      });
+      
+      if (response.status === 200) {
+        // Update the state to trigger a re-render
+        await findVeiculos();
+        alert("Cadastro editado com sucesso!");
+      } else {
+        console.error("Failed to update vehicle.");
+      }
     } catch (error) {
       console.error(error);
     }
-  };
+  }
+
+  async function filtrarVeiculo(veiculoString){
+    if (veiculoString.length > 0){
+      console.log(veiculoString.length)
+    const resultadosFiltrados = veiculos.filter(objeto => objeto.Tipo_Veiculo.includes(veiculoString));
+    setVeiculos(resultadosFiltrados);
+    }else{
+      findVeiculos();
+    }
+  }
+
+
 
   return (
-    <Container>
-      <h2>Veículos</h2>
-      <Button variant="primary" onClick={() => setShowForm(true)}>
-        Criar Veículo
-      </Button>
 
-      <Modal show={showForm} onHide={() => setShowForm(false)}>
+
+    <Container fluid>
+
+
+
+
+
+
+      <Header title="Veículos" />
+      <Row className="w-50 m-auto mb-5 mt-5">
+     
+     
+      <Col md='8'>
+         
+        <Form.Control
+     type="text"
+     onChange={(e) => { filtrarVeiculo(e.target.value) }}
+     placeholder="Filtrar veiculo pelo tipo"
+   />
+</Col>
+
+
+        <Col md='8'>
+          <Button onClick={() => setIsCreated(true)}>Adicionar Novo Veículo</Button>
+        </Col>
+        {/* Botão de sair aqui */}
+      </Row>
+
+      <Col className="w-50 m-auto">
+        {veiculos && veiculos.length > 0 ? (
+          veiculos.map((veiculo, index) => (
+            <div key={index} className="d-flex justify-content-between align-items-center mb-3">
+              <Veiculo veiculo={veiculo} editVeiculo={editVeiculo} />
+              <Button variant="danger" onClick={() => removeVeiculo(veiculo.id)} className="my-2">Apagar</Button>
+            </div>
+          ))
+        ) : (
+          <p className="text-center">Não existe nenhum veículo cadastrado!</p>
+        )}
+      </Col>
+
+
+
+
+
+      {/* Formulário dentro do Modal para adicionar novo veículo */}
+      <Modal show={isCreated} onHide={() => setIsCreated(false)}>
         <Modal.Header>
-          <Modal.Title>
-            {editVeiculo ? "Editar Veículo" : "Criar Veículo"}
-          </Modal.Title>
+          <Modal.Title>Adicionar Novo Veículo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <VeiculoForm
-            onSubmit={editVeiculo ? handleUpdate : handleCreate}
-            veiculoData={editVeiculo || {}}
-          />
-        </Modal.Body>
-      </Modal>
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tipo de Veículo</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {veiculos.map((veiculo) => (
-            <tr key={veiculo.id}>
-              <td>{veiculo.id}</td>
-              <td>{veiculo.Tipo_Veiculo}</td>
-              <td>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => handleEdit(veiculo)}
-                >
-                  Editar
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleDelete(veiculo.id)}
-                >
-                  Excluir
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+        <Form noValidate onSubmit={handleSubmit(addVeiculo)} validated={!!errors}>
+          <Modal.Body>
+
+            <Form.Select
+              aria-label="Tipo de Veículo"
+              className={`mb-3 ${errors.Tipo_Veiculo ? 'is-invalid' : ''}`}
+              label='Tipo de veículo'
+              required={true}
+              {...register('Tipo_Veiculo', {
+                required: 'Tipo de Veículo é obrigatório.'
+              })}
+            >
+              <option value="">Selecione o tipo de veículo</option>
+              <option value="OFFROAD">OFFROAD</option>
+              <option value="convencional">Convencional</option>
+            </Form.Select>
+
+
+
+
+            {/*
+            <Input
+              className="mb-3"
+              type='text'
+              label='Tipo de Veículo'
+              placeholder='Insira o tipo de veículo'
+              required={true}
+              name='Tipo_Veiculo'
+              error={errors.Tipo_Veiculo}
+              validations={register('Tipo_Veiculo', {
+                required: {
+                  value: true,
+                  message: 'Tipo de Veículo é obrigatório.'
+                }
+              })}
+            />*/}
+
+            <Input
+              className="mb-3"
+              type='text'
+              label='Número de Placa'
+              placeholder='Insira o número de placa'
+              required={true}
+              name='Numero_Placa'
+              error={errors.Numero_Placa}
+              validations={register('Numero_Placa', {
+                required: {
+                  value: true,
+                  message: 'Número de Placa é obrigatório.'
+                }
+              })}
+            />
+
+            <Input
+              className="mb-3"
+              type='number'
+              label='Capacidade Máxima de Passageiros'
+              required={true}
+              name='Capacidade_Máxima_Passageiros'
+              error={errors.Capacidade_Máxima_Passageiros}
+              validations={register('Capacidade_Máxima_Passageiros', {
+                required: {
+                  value: true,
+                  message: 'Capacidade Máxima de Passageiros é obrigatória.'
+                }
+              })}
+            />
+
+            <Input
+              className="mb-3"
+              type='text'
+              label='Contato do Motorista'
+              placeholder='Insira o contato do motorista'
+              required={true}
+              name='Contato_Motorista'
+              error={errors.Contato_Motorista}
+              validations={register('Contato_Motorista', {
+                required: {
+                  value: true,
+                  message: 'Contato do Motorista é obrigatório.'
+                }
+              })}
+            />
+
+
+
+            <FormSelect
+              aria-label="Escolha uma Rota"
+              className="mb-3"
+              label='ID da Rota'
+              required={true}
+              name='id_Rotas'
+              {...register('id_Rotas', {
+                required: {
+                  value: true,
+                  message: 'ID da rota é obrigatório.'
+                }
+              })}
+            >
+              <option value="">Selecione uma Rota</option> {/* Adicione um valor vazio para a primeira opção */}
+              {rota.map((rota) => (
+                <option key={rota.id} value={rota.id}>
+                  {rota.Nome_Rota}
+                </option>
+              ))}
+            </FormSelect>
+
+
+
+
+
+            <FormSelect
+              aria-label="Escolha um Horário"
+              className="mb-3"
+              label='ID do Horario'
+              required={true}
+              name='id_Horario'
+              {...register('id_Horario', {
+                required: {
+                  value: true,
+                  message: 'ID do horário é obrigatório.'
+                }
+              })}
+            >
+              <option value="">Selecione uma horário</option> {/* Adicione um valor vazio para a primeira opção */}
+              {horario.map((horario) => (
+                <option key={horario.id} value={horario.id}>
+                  {horario.Horario_Partida}
+                </option>
+              ))}
+            </FormSelect>
+
+
+
+
+            <FormSelect
+              aria-label="Escolha uma escola"
+              className="mb-3"
+              label='ID da Escola'
+              required={true}
+              name='id_Escolas'
+              {...register('id_Escolas', {
+                required: {
+                  value: true,
+                  message: 'ID da Escola é obrigatório.'
+                }
+              })}
+            >
+              <option value="">Selecione uma escola</option> {/* Adicione um valor vazio para a primeira opção */}
+              {escolas.map((escola) => (
+                <option key={escola.id} value={escola.id}>
+                  {escola.Nome}
+                </option>
+              ))}
+            </FormSelect>
+
+            {/* Adicione mais campos de adição conforme necessário */}
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="primary" type="submit">Adicionar</Button>
+            <Button variant="secondary" onClick={() => setIsCreated(false)}>Fechar</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
     </Container>
   );
-};
+}

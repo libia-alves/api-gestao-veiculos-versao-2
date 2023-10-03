@@ -1,18 +1,23 @@
 
 
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, Switch } from "react-router-dom";
 
 import { Login } from "./pages/Login";
+
 import { Register } from "./pages/Register";
 import { Veiculos } from "./pages/Veiculo"; // Importe a página de veículos
 import { Escolas } from "./pages/Escola"; // Importe a página de escolas
 import { Horarios } from "./pages/Horario"; // Importe a página de horários
 import { Rotas } from "./pages/Rota"; // Importe a página de rotas
-import { Users } from "./pages/User"; // Importe a página de usuários
-import { Home } from "./pages/Home"; 
+
+
+import { ProfilePage } from "./pages/ProfilePage";
+import  Dashboard  from "./pages/Dashboard";
+
 
 
 import { isAuthenticated } from './utils/is-authenticated';
+
 
 /**
  * Cria rotas autenticadas
@@ -29,14 +34,15 @@ export function PrivateRoute({ children }) {
 export function Navigations() {
     return (
         <BrowserRouter>
+
             <Routes>
                 <Route index path="/" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route
-                    path="/home"
+                    path="/dashboard"
                     element={(
                         <PrivateRoute>
-                            <Home />
+                            <Dashboard />
                         </PrivateRoute>
                     )}
                 />
@@ -78,13 +84,19 @@ export function Navigations() {
                 />
 
                 <Route
-                    path="/users"
+                    path="/profile"
                     element={(
                         <PrivateRoute>
-                            <Users />
+                            <ProfilePage />
                         </PrivateRoute>
                     )}
                 />
+
+
+
+              
+
+
             </Routes>
         </BrowserRouter>
     )

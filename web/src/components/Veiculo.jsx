@@ -1,64 +1,74 @@
 import React, { useState } from "react";
-import { Button, Card, Modal, Form } from "react-bootstrap";
+import { Button, Card, Modal, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
 
 export function Veiculo(props) {
   const { handleSubmit, register, formState: { errors } } = useForm();
   const [isUpdated, setIsUpdated] = useState(false);
-  const [veiculoData, setVeiculoData] = useState({
-    Tipo_Veiculo: props.veiculo.Tipo_Veiculo,
-    Numero_Placa: props.veiculo.Numero_Placa,
-    Capacidade_Máxima_Passageiros: props.veiculo.Capacidade_Máxima_Passageiros,
-    Contato_Motorista: props.veiculo.Contato_Motorista,
-    id_Rotas: props.veiculo.id_Rotas,
-    id_Horario: props.veiculo.id_Horario,
-    id_Escolas: props.veiculo.id_Escolas,
-  });
 
-  const editVeiculo = async (data) => {
-    await props.editVeiculo({ ...data, id: props.veiculo.id });
+  const [successMessage, setSuccessMessage] = useState("");  // Defini useState para erro e sucesso
+  const [errorMessage, setErrorMessage] = useState("");
+  const [veiculos, setVeiculos] = useState([]);
+  const [isCreated, setIsCreated] = useState(false);
+
+
+  async function editVeiculo (data) {
+    await props.editVeiculo ({ ...data, id: props.veiculo.id });
     setIsUpdated(false);
-  };
+  }
 
+  async function removeVeiculo(id) {
+    try {{/*
+      await deleteVeiculo(id);
+      await findVeiculos();*/}
+    } catch (error) {
+      console.error(error);}}
+
+
+ 
   return (
     <>
       <Card className="mb-3 p-3 bg-light">
-        <Card.Text><strong>Tipo de Veículo: </strong>{veiculoData.Tipo_Veiculo}</Card.Text>
-        <Card.Text><strong>Número de Placa: </strong>{veiculoData.Numero_Placa}</Card.Text>
-        <Card.Text><strong>Capacidade Máxima de Passageiros: </strong>{veiculoData.Capacidade_Máxima_Passageiros}</Card.Text>
-        <Card.Text><strong>Contato do Motorista: </strong>{veiculoData.Contato_Motorista}</Card.Text>
-        <Card.Text><strong>ID da Rota: </strong>{veiculoData.id_Rotas}</Card.Text>
-        <Card.Text><strong>ID do Horário: </strong>{veiculoData.id_Horario}</Card.Text>
-        <Card.Text><strong>ID da Escola: </strong>{veiculoData.id_Escolas}</Card.Text>
+        <Card.Text><strong>Tipo de Veículo: </strong>{props.veiculo.Tipo_Veiculo}</Card.Text>
+        <Card.Text><strong>Número de Placa: </strong>{props.veiculo.Numero_Placa}</Card.Text>
+        <Card.Text><strong>Capacidade Máxima de Passageiros: </strong>{props.veiculo.Capacidade_Máxima_Passageiros}</Card.Text>
+        <Card.Text><strong>Contato do Motorista: </strong>{props.veiculo.Contato_Motorista}</Card.Text>
+        <Card.Text><strong>  Rota: </strong>{props.veiculo.id_Rotas}</Card.Text>
+        <Card.Text><strong>  Horário: </strong>{props.veiculo.id_Horario}</Card.Text>
+        <Card.Text><strong>  Escola: </strong>{props.veiculo.id_Escolas}</Card.Text>
+        <Row>
         <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
+
+  <Button variant="danger" onClick={() => {removeVeiculo(props.veiculo.id)}} className="my-2">Apagar</Button>
+
+        </Row>
+      
       </Card>
       <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
         <Modal.Header>
           <Modal.Title>Editar Veículo</Modal.Title>
         </Modal.Header>
+
         <Form noValidate onSubmit={handleSubmit(editVeiculo)} validated={!!errors}>
           <Modal.Body>
-            <Input
-              className="mb-3"
-              type="text"
-              defaultValue={veiculoData.Tipo_Veiculo}
-              label="Tipo de Veículo"
-              placeholder="Insira o tipo de veículo"
+          <Form.Select
+              aria-label="Tipo de Veículo"
+              className={`mb-3 ${errors.Tipo_Veiculo ? 'is-invalid' : ''}`}
+              label='Tipo de veículo'
               required={true}
-              name="Tipo_Veiculo"
-              error={errors.Tipo_Veiculo}
-              validations={register('Tipo_Veiculo', {
-                required: {
-                  value: true,
-                  message: 'Tipo de Veículo é obrigatório.'
-                }
+              {...register('Tipo_Veiculo', {
+                required: 'Tipo de Veículo é obrigatório.'
               })}
-            />
+            >
+              <option value="">Selecione o tipo de veículo</option>
+              <option value="OFFROAD">OFFROAD</option>
+              <option value="convencional">Convencional</option>
+            </Form.Select>
             <Input
               className="mb-3"
               type="text"
-              defaultValue={veiculoData.Numero_Placa}
+              defaultValue={props.veiculo.Numero_Placa}
               label="Número de Placa"
               placeholder="Insira o número de placa"
               required={true}
@@ -74,7 +84,7 @@ export function Veiculo(props) {
             <Input
               className="mb-3"
               type="number"
-              defaultValue={veiculoData.Capacidade_Máxima_Passageiros}
+              defaultValue={props.veiculo.Capacidade_Máxima_Passageiros}
               label="Capacidade Máxima de Passageiros"
               required={true}
               name="Capacidade_Máxima_Passageiros"
@@ -89,7 +99,7 @@ export function Veiculo(props) {
             <Input
               className="mb-3"
               type="text"
-              defaultValue={veiculoData.Contato_Motorista}
+              defaultValue={props.veiculo.Contato_Motorista}
               label="Contato do Motorista"
               placeholder="Insira o contato do motorista"
               required={true}
@@ -105,7 +115,7 @@ export function Veiculo(props) {
             <Input
               className="mb-3"
               type="number"
-              defaultValue={veiculoData.id_Rotas}
+              defaultValue={props.veiculo.id_Rotas}
               label="ID da Rota"
               required={true}
               name="id_Rotas"
@@ -120,7 +130,7 @@ export function Veiculo(props) {
             <Input
               className="mb-3"
               type="number"
-              defaultValue={veiculoData.id_Horario}
+              defaultValue={props.veiculo.id_Horario}
               label="ID do Horário"
               required={true}
               name="id_Horario"
@@ -135,7 +145,7 @@ export function Veiculo(props) {
             <Input
               className="mb-3"
               type="number"
-              defaultValue={veiculoData.id_Escolas}
+              defaultValue={props.veiculo.id_Escolas}
               label="ID da Escola"
               required={true}
               name="id_Escolas"

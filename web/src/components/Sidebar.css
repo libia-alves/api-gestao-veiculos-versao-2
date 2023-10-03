@@ -1,0 +1,83 @@
+/* Estilos para a Barra Lateral */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px; /* Largura da barra lateral */
+  background-color: #333; /* Cor de fundo da barra lateral */
+  overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
+  padding-top: 20px;
+  transition: width 0.3s ease; /* Transição suave da largura da barra lateral */
+}
+
+/* Estilos para os links na Barra Lateral */
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #fff; /* Cor dos links na barra lateral */
+  display: block;
+  transition: background-color 0.3s ease; /* Transição suave da cor de fundo dos links */
+}
+
+/* Estilo para os links ativos na Barra Lateral */
+.sidebar a.active {
+  background-color: #007bff; /* Cor de fundo do link ativo */
+  color: #fff; /* Cor do texto do link ativo */
+}
+
+/* Estilo para o botão de alternância da Barra Lateral em telas pequenas */
+.toggle-button {
+  background-color: #333; /* Cor de fundo do botão de alternância */
+  border: none;
+  color: #fff;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* Estilos para o conteúdo principal */
+.content {
+  margin-left: 250px; /* Largura da barra lateral + margem */
+  padding: 15px;
+  transition: margin-left 0.3s ease; /* Transição suave da margem esquerda */
+}
+
+/* Estilo para expandir a barra lateral */
+.sidebar.expanded {
+  width: 75px; /* Largura reduzida para a versão expandida */
+}
+
+/* Estilo para a barra lateral expandida */
+.sidebar.expanded a {
+  padding: 10px;
+  text-align: center;
+}
+
+/* Estilo para a margem esquerda quando a barra lateral está expandida */
+.content.expanded {
+  margin-left: 75px;
+}
+
+/* Estilo para o ícone do botão de alternância */
+.toggle-icon {
+  font-size: 20px;
+}
+
+/* Estilos para o botão de alternância em telas pequenas */
+@media (max-width: 768px) {
+  .toggle-button {
+    display: block;
+  }
+  .sidebar {
+    width: 75px;
+  }
+  .sidebar.expanded {
+    width: 250px;
+  }
+  .content {
+    margin-left: 75px;
+  }
+  .content.expanded {
+    margin-left: 250px;
+  }
+}

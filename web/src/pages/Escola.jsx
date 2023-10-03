@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Col, Modal, Form, Row } from "react-bootstrap";
+import { Container, Button, Col, Modal, Form, Row, FormSelect, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Escola } from "../components/Escola";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
 
-import { createEscola, deleteEscola, getEscolas, updateEscola } from "../services/escola.service";
+
+import { createEscola, deleteEscola, getEscolas, updateEscola } from "../services/escola-service";
+import { getUsers } from "../services/user-service";
+
+
 
 export function Escolas() {
   const [escolas, setEscolas] = useState([]);
@@ -14,27 +18,59 @@ export function Escolas() {
   const { handleSubmit, register, formState: { errors } } = useForm();
   const navigate = useNavigate();
 
+  const [user, setUser] = useState([]);
+  const id = sessionStorage.getItem ('id');
+  const [successMessage, setSuccessMessage] = useState("");  // Defini useState para erro e sucesso
+  const [errorMessage, setErrorMessage] = useState("");
+
+
   useEffect(() => {
     findEscolas();
+    findUsers();
     // eslint-disable-next-line
   }, []);
+
+async function findUsers() {
+  try {
+    const result = await getUsers(id);
+    setUser(result.data);
+    console.log(result.data)
+  } catch (error) {
+    console.error(error);
+    
+  }
+}
+
 
   async function findEscolas() {
     try {
       const result = await getEscolas();
       setEscolas(result.data);
+      console.log(result.data)
     } catch (error) {
       console.error(error);
       navigate('/');
     }
   }
 
+  async function filtrarEscola(escolaString){
+    if (escolaString.length > 0){
+      console.log(escolaString.length)
+    const resultadosFiltrados = escolas.filter(objeto => objeto.Nome.includes(escolaString));
+    setEscolas(resultadosFiltrados);
+    }else{
+      findEscolas();
+    }
+  }
+
   async function removeEscola(id) {
     try {
       await deleteEscola(id);
+      alert("Cadastro deletado com sucesso!");
       await findEscolas();
     } catch (error) {
       console.error(error);
+      alert("Erro: " + error.response.data.error);
     }
   }
 
@@ -42,6 +78,7 @@ export function Escolas() {
     try {
       await createEscola(data);
       setIsCreated(false);
+      alert("Cadastro feito com sucesso!");
       await findEscolas();
     } catch (error) {
       console.error(error);
@@ -61,31 +98,63 @@ export function Escolas() {
         // Adicione mais campos de edição conforme necessário
       });
       await findEscolas();
+      alert("Cadastro editado com sucesso!");
     } catch (error) {
       console.error(error);
     }
   }
 
+  
+
+
+
   return (
-    <Container fluid>
+
+
+
+
+    <Container fluid>    
+
+
+
       <Header title="Escolas" />
+
+
+
+      {successMessage && (
+        <Alert variant="success" onClose={() => setSuccessMessage("")} dismissible>
+          {successMessage}
+        </Alert>
+      )}
+      {errorMessage && (
+        <Alert variant="danger" onClose={() => setErrorMessage("")} dismissible>
+          {errorMessage}
+        </Alert>
+      )}
       <Row className="w-50 m-auto mb-5 mt-5">
-        <Col md='10'>
+
+        <Col md='8'>
+          <Form.Control 
+          type="text" 
+          onChange={(e) => {filtrarEscola(e.target.value)}}></Form.Control>
+        </Col>
+        <Col md='4'>          
           <Button onClick={() => setIsCreated(true)}>Adicionar Nova Escola</Button>
         </Col>
         {/* Botão de sair aqui */}
+
       </Row>
 
       <Col className="w-50 m-auto">
         {escolas && escolas.length > 0
           ? escolas.map((escola, index) => (
-              <Escola
-                key={index}
-                escola={escola}
-                removeEscola={async () => await removeEscola(escola.id)}
-                editEscola={editEscola}
-              />
-            ))
+            <Escola
+              key={index}
+              escola={escola}
+              removeEscola={async () => await removeEscola(escola.id)}
+              editEscola={editEscola}
+            />
+          ))
           : <p className="text-center">Não existe nenhuma escola cadastrada!</p>}
       </Col>
 
@@ -112,7 +181,7 @@ export function Escolas() {
                 }
               })}
             />
-            
+
             <Input
               className="mb-3"
               type='text'
@@ -145,7 +214,7 @@ export function Escolas() {
               })}
             />
 
-          <Input
+            <Input
               className="mb-3"
               type='text'
               label='Pontos_Embarque_Desembarque'
@@ -160,7 +229,7 @@ export function Escolas() {
                 }
               })}
             />
-          <Input
+            <Input
               className="mb-3"
               type='text'
               label='Informações_Motoristas'
@@ -176,21 +245,29 @@ export function Escolas() {
               })}
             />
 
-        <Input
+           
+
+            <FormSelect
+              aria-label="Selecione o gestor"
               className="mb-3"
-              type='text'
-              label='id_Gestor'
-              placeholder='Insira o id_Gestor'
+              label='ID do gestor'
               required={true}
               name='id_Gestor'
-              error={errors.id_Gestor}
-              validations={register('id_Gestor', {
+              {...register('id_Gestor', {
                 required: {
                   value: true,
-                  message: 'id_Gestor é obrigatório.'
+                  message: 'ID da gestor é obrigatório.'
                 }
               })}
-            />
+            >
+              <option value="">Selecione o gestor</option> {/* Adicione um valor vazio para a primeira opção */}
+              {Array(user).map((id_Gestor) => (
+                <option key={id_Gestor.id} value={id_Gestor.id}>
+                  {id_Gestor.Nome}
+                </option>
+              ))}
+            </FormSelect>
+
 
 
             {/* Adicione mais campos de adição conforme necessário */}

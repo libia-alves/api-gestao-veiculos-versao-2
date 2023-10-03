@@ -7,6 +7,8 @@ import { Header } from "../components/Header";
 import { Input } from '../components/Input';
 import { createRota, deleteRota, getRotas, updateRota } from "../services/rota-service";
 
+
+
 export function Rotas() {
   const [rotas, setRotas] = useState([]);
   const [isCreated, setIsCreated] = useState(false);
@@ -31,6 +33,7 @@ export function Rotas() {
   async function removeRota(id) {
     try {
       await deleteRota(id);
+      alert("rota deletada com sucesso!");
       await findRotas();
     } catch (error) {
       console.error(error);
@@ -41,6 +44,7 @@ export function Rotas() {
     try {
       await createRota(data);
       setIsCreated(false);
+        alert("rota feita com sucesso!");
       await findRotas();
     } catch (error) {
       console.error(error);
@@ -56,16 +60,55 @@ export function Rotas() {
         // Adicione mais campos de edição conforme necessário
       });
       await findRotas();
+      alert("Cadastro editado com sucesso!");
     } catch (error) {
       console.error(error);
     }
   }
 
+  async function filtrarRota(rotaString) {
+    if (rotaString.length > 0) {
+      const valorNumerico = parseInt(rotaString, 10); // Converter a entrada para um número inteiro
+  
+      const resultadosFiltrados = rotas.filter(objeto => {
+        // Verifica se o campo Nome_Rota é igual ao valor numérico fornecido
+        return objeto.Nome_Rota === valorNumerico;
+      });
+  
+      setRotas(resultadosFiltrados);
+    } else {
+      findRotas();
+    }
+  }
+  
+  
+
   return (
-    <Container fluid>
+
+    <Container fluid>    
+
+
+  
+    
+    
+
+
+
       <Header title="Rotas" />
       <Row className="w-50 m-auto mb-5 mt-5">
+
+      <Col md={8}>
+  <Form.Control
+    type="number"
+    onChange={(e) => { filtrarRota(e.target.value) }}
+    placeholder="Filtrar por Nome_Rota (número)"
+  />
+</Col>
+
+
+        <Col md='4'> 
         <Button onClick={() => setIsCreated(true)}>Adicionar Nova Rota</Button>
+        </Col>
       </Row>
 
       <Col className="w-50 m-auto">
@@ -132,4 +175,4 @@ export function Rotas() {
       </Modal>
     </Container>
   );
-}
+ }

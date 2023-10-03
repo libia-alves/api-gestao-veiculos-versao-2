@@ -45,6 +45,32 @@ class EscolaController {
     }
   }
 
+ //get filtrado pro status
+ async getByEndereco (request, response) {
+  const httpHelper = new HttpHelper(response);
+  try {
+    console.log(request.params);
+      const { Endereço_Completo } = request.params;
+
+      const escolas = await EscolaModel.findAll({
+        where: { Endereço_Completo  }
+    });
+
+
+      if (escolas) {
+          return httpHelper.badRequest('Parâmetros inválidos!');
+      }
+
+     
+      return httpHelper.ok(escolas);
+  } catch (error){
+      console.error('Erro ao obter endereço por status:', error);
+      return httpHelper.internalError(error);
+  }
+}
+
+
+
   async update(request, response) {
     const httpHelper = new HttpHelper(response);
     try {

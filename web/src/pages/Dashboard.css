@@ -1,0 +1,36 @@
+/* Centralize o conteúdo verticalmente na página */
+.dashboard {
+    display: flex;
+    align-items: right;
+    min-height: 50vh;
+  
+
+  }
+  
+  /* Desloque-o para o lado direito usando margem esquerda */
+  .dashboard-container {
+    margin-left: auto; /* Isso empurra o conteúdo para a direita */
+  }
+  
+  /* Adicione margem superior para o conteúdo */
+  .dashboard-card {
+    margin-top: 1px; 
+   /* height: 400px; */
+  }
+  
+
+ .dashboard-veiculo {
+  margin-left:00px
+  
+  }
+  
+  .chart-container {
+    margin-top: -200px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 100px; /* Ajuste este valor para mover o gráfico para a direita */
+    height: 90vh;
+  }
+  
+  

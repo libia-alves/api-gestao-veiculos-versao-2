@@ -1,4 +1,6 @@
 
+
+
 const { HttpHelper } = require("../utils/http-helper");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -23,18 +25,22 @@ class UserController {
                 Nome,
                 Email,
                 Data_Nascimento,
-                Celular:Number(Celular),
+                Celular: Number(Celular),
                 CPF,
                 Endereço,
                 Senha: SenhaHashed,
             });
             if (!user) return httpHelper.badRequest('Houve um erro ao criar usuário');
+
+            // Inclua o ID do usuário no payload do JWT
             const accessToken = jwt.sign(
                 { id: user.id },
                 process.env.TOKEN_SECRET,
                 { expiresIn: process.env.TOKEN_EXPIRES_IN }
             );
-            return httpHelper.created({ accessToken });
+
+            // Retorne o ID do usuário junto com o token
+            return httpHelper.created({ accessToken, userId: user.id });
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -54,11 +60,87 @@ class UserController {
                 process.env.TOKEN_SECRET,
                 { expiresIn: process.env.TOKEN_EXPIRES_IN }
             );
-            return httpHelper.ok({ accessToken });
+            return httpHelper.ok({ accessToken, userId: userExists.id });
         } catch (error) {
             return httpHelper.internalError(error);
         }
     }
+
+
+
+async update(request, response) {
+    const httpHelper = new HttpHelper(response);
+    try {
+        const { id } = request.params;
+        const { Nome, Email, Data_Nascimento, Celular, CPF, Endereço, Senha } = request.body;
+
+        const user = await UserModel.findByPk(id);
+
+        if (!user) return httpHelper.notFound('Usuário não encontrado!');
+
+        // Se algum campo for enviado, atualize-o
+        if (Nome) user.Nome = Nome;
+        if (Email) user.Email = Email;
+        if (Data_Nascimento) user.Data_Nascimento = Data_Nascimento;
+        if (Celular) user.Celular = Celular;
+        if (CPF) user.CPF = CPF;
+        if (Endereço) user.Endereço = Endereço;
+
+        if (Senha) {
+            const SenhaHashed = await bcrypt.hash(
+                Senha,
+                Number(process.env.SALT)
+            );
+            user.Senha = SenhaHashed;
+        }
+
+        await user.save();
+
+        // Remova o campo de senha do usuário antes de retornar os dados
+        user.Senha = undefined;
+
+        return httpHelper.ok('Usuário atualizado com sucesso!', user);
+    } catch (error) {
+        return httpHelper.internalError(error);
+    }
 }
 
+async getPerfil(request, response) {
+    const httpHelper = new HttpHelper(response);
+    try {
+        const { id } = request.params;
+
+        const users = await UserModel.findByPk(id);
+
+
+        return httpHelper.ok(users);
+    } catch (error) {
+        return httpHelper.internalError(error);
+    }
+}
+
+async delete (request, response) {
+    const httpHelper = new HttpHelper(response);
+    try {
+        const { id } = request.params;
+
+        const user = await UserModel.findByPk(id);
+
+        if (!user) return httpHelper.notFound('Usuário não encontrado!');
+
+        await user.destroy();
+
+        return httpHelper.ok('Usuário excluído com sucesso!');
+    } catch (error) {
+        return httpHelper.internalError(error);
+    }
+}
+}
+
+
+
+
+
+
 module.exports = { UserController };
+

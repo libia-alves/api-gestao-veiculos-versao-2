@@ -1,0 +1,15 @@
+
+
+.table tbody tr:hover {
+  background-color: #ddd;
+}
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.button-group .btn {
+  margin-top: 10px;
+}

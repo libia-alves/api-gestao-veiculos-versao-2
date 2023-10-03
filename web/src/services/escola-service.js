@@ -7,12 +7,9 @@ export async function getEscolas() {
       headers: {
         'Authorization': `Bearer ${JSON.parse(acessToken)}`
       }
-
     }
-    
-    );
+ );
     return result;
-
 
 }
 

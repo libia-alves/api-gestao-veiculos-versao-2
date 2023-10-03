@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
-import { getHorarios, createHorario, updateHorario, deleteHorario } from "../services/horario-service";
 
-export function Horario() {
+
+export function Horario(props) {
+  const { handleSubmit, register, formState: { errors } } = useForm(); // Corrigi "formsState" para "formState"
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  async function editHorario (data) {
+    await props.editHorario ({ ...data, id: props.horario.id });
+    setIsUpdated (false);
+  }
+
+  /*
   const [horarios, setHorarios] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedHorario, setSelectedHorario] = useState(null);
 
-  const { handleSubmit, register, formState: { errors } } = useForm();
-
+  
   const refreshHorarios = async () => {
     const response = await getHorarios();
     if (response.status === 200) {
@@ -49,33 +56,45 @@ export function Horario() {
       setIsModalOpen(false);
     }
   };
+  */
 
   return (
     <>
       <h1>Horários</h1>
-      <Button onClick={() => { setIsModalOpen(true); setSelectedHorario(null); }}>Adicionar Horário</Button>
-      {horarios.map((horario) => (
-        <Card key={horario.id} className="mb-3 p-3 bg-light">
-          <Card.Text><strong>Horário de Partida: </strong>{horario.Horario_Partida}</Card.Text>
-          <Card.Text><strong>Horário de Chegada: </strong>{horario.Horario_Chegada}</Card.Text>
+      <Card className="mb-3 p-3 bg-light">
+      
+        
+          <Card.Text><strong>Horário de Partida: </strong>{props.horario.Horario_Partida}</Card.Text>
+          <Card.Text><strong>Horário de Chegada: </strong>{props.horario.Horario_Chegada}</Card.Text>
+
           <Row xs="auto" className="d-flex justify-content-end">
-            <Button variant="secondary" onClick={() => { setIsModalOpen(true); setSelectedHorario(horario); }}>Editar</Button>
-            <Button variant="outline-danger" className="ms-3" onClick={() => handleDeleteHorario(horario)}>Apagar</Button>
+
+            <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
+            <Button variant="outline-danger" className="ms-3" onClick={props.removeHorario}>Apagar</Button> 
           </Row>
         </Card>
-      ))}
-      <Modal show={isModalOpen} onHide={() => { setIsModalOpen(false); setSelectedHorario(null); }}>
-        {/* Conteúdo do Modal */}
-        <Form onSubmit={selectedHorario ? handleSubmit(handleEditHorario) : handleSubmit(handleCreateHorario)} validated={!!errors}>
+      
+      <Modal show={isUpdated} onHide={() => { setIsUpdated(false) }}>
+        <Modal.Header>
+        <Modal.Title>Editar Horário: Partida - {props.horario.Horario_Partida}, Chegada - {props.horario.Horario_Chegada}</Modal.Title>
+
+        </Modal.Header>
+       
+
+        <Form noValidate onSubmit={handleSubmit(editHorario)} validated={!!errors}>
           <Modal.Body>
+          
+          
+          
+
             <Input
               className="mb-3"
-              type="number"
-              defaultValue={selectedHorario ? selectedHorario.Horario_Partida : ""}
-              label="Horário de Partida"
-              placeholder="Insira o horário de partida"
+              type='number'
+              defaultValue={props.horario.Horario_Partida}
+              label='Horario de partida'
+              placeholder='Insira o horário de partida '
               required={true}
-              name="Horario_Partida"
+              name='Horario_Partida'
               error={errors.Horario_Partida}
               validations={register('Horario_Partida', {
                 required: {
@@ -86,12 +105,12 @@ export function Horario() {
             />
             <Input
               className="mb-3"
-              type="number"
-              defaultValue={selectedHorario ? selectedHorario.Horario_Chegada : ""}
-              label="Horário de Chegada"
-              placeholder="Insira o horário de chegada"
+              type='number'
+              defaultValue={props.horario.Horario_Chegada}
+              label='Horario de chegada'
+              placeholder='Insira o horário de chegada '
               required={true}
-              name="Horario_Chegada"
+              name='Horario_Chegada'
               error={errors.Horario_Chegada}
               validations={register('Horario_Chegada', {
                 required: {
@@ -100,13 +119,17 @@ export function Horario() {
                 }
               })}
             />
+
+
+
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" type="submit">{selectedHorario ? "Editar" : "Criar"}</Button>
-            <Button variant="secondary" onClick={() => { setIsModalOpen(false); setSelectedHorario(null); }}>Fechar</Button>
+          <Button variant="primary" type="submit">Editar</Button>
+          <Button variant="secondary" onClick={() => setIsUpdated(false)}>Fechar</Button>
           </Modal.Footer>
         </Form>
       </Modal>
     </>
   );
 }
+

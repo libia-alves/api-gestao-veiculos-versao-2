@@ -11,7 +11,7 @@ server.use(express.json());
 server.use(cors());
 server.use(routes);
 
-const PORT = 8081;
+const PORT = 8082;
 server.listen(PORT, () => {
     console.log(`API iniciada: http://localhost:${PORT}`);
 });

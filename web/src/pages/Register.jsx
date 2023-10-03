@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
+import { Login } from "../pages/Login";
 
 import { registerUser } from "../services/user-service";
 
@@ -19,7 +20,7 @@ export function Register() {
         try {
             const user = await registerUser(data);
             setResult(user);
-            navigate('/home');
+            navigate('/');
         } catch (error) {
             console.log(error)
             setResult({
