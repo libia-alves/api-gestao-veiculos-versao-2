@@ -20,7 +20,6 @@ export function Escola(props) {
         <Card.Text><strong>Contato: </strong>{props.escola.Contato_Escola}</Card.Text>
         <Card.Title><strong>Pontos_Embarque_Desembarque: </strong>{props.escola.Pontos_Embarque_Desembarque}</Card.Title>
         <Card.Text><strong>Informações_Motoristas: </strong>{props.escola.Informações_Motoristas}</Card.Text>
-        <Card.Text><strong>id_Gestor: </strong>{props.escola.id_Gestor}</Card.Text>
 
         <Row xs="auto" className="d-flex justify-content-end">
           <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
