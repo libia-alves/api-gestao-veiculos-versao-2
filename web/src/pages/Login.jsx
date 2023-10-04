@@ -6,8 +6,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
-
+import './login.css';
 import { loginUser } from '../services/user-service';
+import backgroundImage from "../pages/imagemLogin.jpeg";
+
+const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "50%",
+    backgroundPosition: "center",
+    minHeight: "100vh", // Defina a altura mínima da tela inteira
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center", // Centralizar verticalmente
+  };
 
 export function Login() {
     const { handleSubmit, register, formState: { errors } } = useForm();
@@ -28,6 +39,7 @@ export function Login() {
     }
 
     return (
+        <div style={backgroundStyle}>
         <Container>
             <Modal
                 show={result}
@@ -35,14 +47,24 @@ export function Login() {
                 message={result?.message}
                 handleClose={() => setResult(null)}
             />
-            <Header title="Entre na sua conta" />
+          
             <Form
+            
                 noValidate
                 validated={!!errors}
                 onSubmit={handleSubmit(onSubmit)}
                 className="bg-light rounded p-5 shadow w-50 m-auto"
             >
                 <Col>
+
+                <h6 style={{ textAlign: "center" }}>
+  Seja bem vindo ao site de gestão de veículos escolares!
+</h6>
+                <Header title="Login
+                
+                "className="white-text" /> 
+                <Header> </Header>
+                
                     <Input
                         className="mb-4"
                         label="E-mail"
@@ -84,5 +106,6 @@ export function Login() {
                 </Col>
             </Form>
         </Container>
+        </div>
     );
 }

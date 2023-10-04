@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
       },
       Contato_Motorista: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
       },
      

@@ -132,6 +132,10 @@ export function Register() {
                             required: {
                                 value: true,
                                 message: 'CPF é obrigatório'
+                            },
+                            pattern: {
+                                value: (/^\d{3}\.\d{3}\.\d{3}-\d{2}$/),
+                                message: 'CPF inválido!'
                             }
                         })}
                     />

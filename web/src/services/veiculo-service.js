@@ -43,6 +43,7 @@ export async function getTotalCount() {
 export async function updateVeiculo(data) {
   const acessToken = sessionStorage.getItem('token');
     const result = await api.put(`/veiculo/${data.id}`, {
+      Tipo_Veiculo: data.Tipo_Veiculo,
       Numero_Placa: data.Numero_Placa,
       Capacidade_Máxima_Passageiross: data.Capacidade_Máxima_Passageiros,
       Contato_Motorista: data.Contato_Motorista,

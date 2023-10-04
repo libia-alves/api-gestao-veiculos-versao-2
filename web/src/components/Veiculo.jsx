@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Button, Card, Modal, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
+import { deleteVeiculo } from "../services/veiculo-service";
+
+
 
 export function Veiculo(props) {
   const { handleSubmit, register, formState: { errors } } = useForm();
@@ -18,18 +21,19 @@ export function Veiculo(props) {
     setIsUpdated(false);
   }
 
-  async function removeVeiculo(id) {
-    try {{/*
-      await deleteVeiculo(id);
-      await findVeiculos();*/}
+  async function removeVeiculo(data) {
+    try {
+      await props.removeVeiculo ({ ...data, id: props.veiculo.id });
+
     } catch (error) {
       console.error(error);}}
 
 
  
   return (
+
     <>
-      <Card className="mb-3 p-3 bg-light">
+      <Card className="mb-5 p-5 bg-light">
         <Card.Text><strong>Tipo de Veículo: </strong>{props.veiculo.Tipo_Veiculo}</Card.Text>
         <Card.Text><strong>Número de Placa: </strong>{props.veiculo.Numero_Placa}</Card.Text>
         <Card.Text><strong>Capacidade Máxima de Passageiros: </strong>{props.veiculo.Capacidade_Máxima_Passageiros}</Card.Text>
@@ -37,10 +41,10 @@ export function Veiculo(props) {
         <Card.Text><strong>  Rota: </strong>{props.veiculo.id_Rotas}</Card.Text>
         <Card.Text><strong>  Horário: </strong>{props.veiculo.id_Horario}</Card.Text>
         <Card.Text><strong>  Escola: </strong>{props.veiculo.id_Escolas}</Card.Text>
-        <Row>
+        <Row xs= "auto" className="d-flex justify-content-end">
         <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
 
-  <Button variant="danger" onClick={() => {removeVeiculo(props.veiculo.id)}} className="my-2">Apagar</Button>
+        <Button variant="outline-danger" className="ms-3" onClick={removeVeiculo}>Apagar</Button>
 
         </Row>
       
@@ -65,6 +69,7 @@ export function Veiculo(props) {
               <option value="OFFROAD">OFFROAD</option>
               <option value="convencional">Convencional</option>
             </Form.Select>
+
             <Input
               className="mb-3"
               type="text"

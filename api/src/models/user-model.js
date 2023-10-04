@@ -9,7 +9,7 @@ class UserModel extends Model {
             Email: DataTypes.STRING,
             Senha: DataTypes.STRING,
             Data_Nascimento: DataTypes.DATE,
-            Celular: DataTypes.INTEGER,
+            Celular: DataTypes.TEXT,
             CPF: DataTypes.STRING,
             Endereço: DataTypes.STRING
         }, {

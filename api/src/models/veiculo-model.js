@@ -6,7 +6,7 @@ class VeiculoModel extends Model {
             Tipo_Veiculo: DataTypes.STRING,
             Numero_Placa: DataTypes.STRING,
             Capacidade_Máxima_Passageiros: DataTypes.INTEGER,
-            Contato_Motorista: DataTypes.INTEGER,
+            Contato_Motorista: DataTypes.STRING,
             id_Rotas: DataTypes.INTEGER,
             id_Horario: DataTypes.INTEGER,
             id_Escolas: DataTypes.INTEGER

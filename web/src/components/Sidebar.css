@@ -5,7 +5,7 @@
   left: 0;
   height: 100%;
   width: 250px; /* Largura da barra lateral */
-  background-color: #333; /* Cor de fundo da barra lateral */
+  background-color: #2970aa; /* Cor de fundo da barra lateral */
   overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
   padding-top: 20px;
   transition: width 0.3s ease; /* Transição suave da largura da barra lateral */

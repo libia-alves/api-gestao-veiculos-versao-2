@@ -85,9 +85,9 @@ export function Veiculos() {
 
 
 
-  async function removeVeiculo(id) {
+  async function removeVeiculo(data) {
     try {
-      await deleteVeiculo(id);
+      await deleteVeiculo(data.id);
       alert("Cadastro deletado com sucesso!");
       await findVeiculos();
     } catch (error) {
@@ -120,7 +120,7 @@ export function Veiculos() {
         id_Escolas: data.id_Escolas,
         // Adicione mais campos de edição conforme necessário
       });
-      
+
       if (response.status === 200) {
         // Update the state to trigger a re-render
         await findVeiculos();
@@ -133,12 +133,12 @@ export function Veiculos() {
     }
   }
 
-  async function filtrarVeiculo(veiculoString){
-    if (veiculoString.length > 0){
+  async function filtrarVeiculo(veiculoString) {
+    if (veiculoString.length > 0) {
       console.log(veiculoString.length)
-    const resultadosFiltrados = veiculos.filter(objeto => objeto.Tipo_Veiculo.includes(veiculoString));
-    setVeiculos(resultadosFiltrados);
-    }else{
+      const resultadosFiltrados = veiculos.filter(objeto => objeto.Tipo_Veiculo.includes(veiculoString));
+      setVeiculos(resultadosFiltrados);
+    } else {
       findVeiculos();
     }
   }
@@ -157,36 +157,49 @@ export function Veiculos() {
 
       <Header title="Veículos" />
       <Row className="w-50 m-auto mb-5 mt-5">
-     
-     
-      <Col md='8'>
-         
-        <Form.Control
-     type="text"
-     onChange={(e) => { filtrarVeiculo(e.target.value) }}
-     placeholder="Filtrar veiculo pelo tipo"
-   />
-</Col>
 
 
-        <Col md='8'>
-          <Button onClick={() => setIsCreated(true)}>Adicionar Novo Veículo</Button>
-        </Col>
+       
+
+          <Row>
+
+           
+              <Col>
+                <Form.Control
+                  type="text"
+                  onChange={(e) => { filtrarVeiculo(e.target.value) }}
+                  placeholder="Filtrar veiculo pelo tipo"
+                />
+              </Col>
+
+
+              <Col>
+                <Button onClick={() => setIsCreated(true)}>Adicionar Novo Veículo</Button>
+              </Col>
+
+           
+          </Row>
+       
+
+
+
+
+
         {/* Botão de sair aqui */}
       </Row>
 
       <Col className="w-50 m-auto">
-        {veiculos && veiculos.length > 0 ? (
+        {veiculos && veiculos.length > 0 ? 
           veiculos.map((veiculo, index) => (
-            <div key={index} className="d-flex justify-content-between align-items-center mb-3">
-              <Veiculo veiculo={veiculo} editVeiculo={editVeiculo} />
-              <Button variant="danger" onClick={() => removeVeiculo(veiculo.id)} className="my-2">Apagar</Button>
-            </div>
-          ))
-        ) : (
-          <p className="text-center">Não existe nenhum veículo cadastrado!</p>
-        )}
-      </Col>
+            <Veiculo
+            key={index}
+            veiculo={veiculo}
+            removeVeiculo={removeVeiculo}
+            editVeiculo={editVeiculo}
+          />
+        ))
+        : <p className="text-center">Não existe nenhuma veiculo cadastrado!</p>}
+    </Col>
 
 
 

@@ -30,7 +30,7 @@ export default function App() {
             element={
               <PrivateRoute>
                 <>
-                {isAuthenticated() && <Sidebar expanded={expanded} setExpanded={setExpanded} />}
+                
                 </>
                 <Dashboard />
               </PrivateRoute>
@@ -40,7 +40,7 @@ export default function App() {
             path="/veiculos"
             element={
               <PrivateRoute>
-                {isAuthenticated() && <Sidebar expanded={expanded} setExpanded={setExpanded} />}
+                { <Sidebar expanded={expanded} setExpanded={setExpanded} />}
                 <Veiculos />
               </PrivateRoute>
             }
@@ -49,7 +49,7 @@ export default function App() {
             path="/escolas"
             element={
               <PrivateRoute>
-                {isAuthenticated() && <Sidebar expanded={expanded} setExpanded={setExpanded} />}
+                {<Sidebar expanded={expanded} setExpanded={setExpanded} />}
                 <Escolas />
               </PrivateRoute>
             }
@@ -58,7 +58,7 @@ export default function App() {
             path="/horarios"
             element={
               <PrivateRoute>
-                {isAuthenticated() && <Sidebar expanded={expanded} setExpanded={setExpanded} />}
+                { <Sidebar expanded={expanded} setExpanded={setExpanded} />}
                 <Horarios />
               </PrivateRoute>
             }
@@ -67,7 +67,7 @@ export default function App() {
             path="/rotas"
             element={
               <PrivateRoute>
-                {isAuthenticated() && <Sidebar expanded={expanded} setExpanded={setExpanded} />}
+                { <Sidebar expanded={expanded} setExpanded={setExpanded} />}
                 <Rotas />
               </PrivateRoute>
             }
@@ -76,7 +76,7 @@ export default function App() {
             path="/profile"
             element={
               <PrivateRoute>
-                {isAuthenticated() && <Sidebar expanded={expanded} setExpanded={setExpanded} />}
+                { <Sidebar expanded={expanded} setExpanded={setExpanded} />}
                 <ProfilePage />
               </PrivateRoute>
             }

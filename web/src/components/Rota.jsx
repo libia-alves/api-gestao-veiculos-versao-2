@@ -3,7 +3,7 @@ import { Button, Card, Modal, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Input } from "./Input";
 
-export function Rota(props) {
+export function EditRota(props) {
   const { handleSubmit, register, formState: { errors } } = useForm();
   const [isUpdated, setIsUpdated] = useState(false);
   const [rotaData, setRotaData] = useState({
@@ -11,34 +11,27 @@ export function Rota(props) {
     Descricao_Rota: props.rota.Descricao_Rota,
   });
 
-  const editRota = async (data) => {
+ async function editRota (data) {
     await props.editRota({ ...data, id: props.rota.id });
-    setIsUpdated(false);
-  };
+    props.setIsUpdated(false);
+  }
 
-  useEffect(() => {
-    setRotaData({
-      Nome_Rota: props.rota.Nome_Rota,
-      Descricao_Rota: props.rota.Descricao_Rota,
-    });
-  }, [props.rota]);
 
   return (
-    <>
-      <Card className="mb-3 p-3 bg-light">
-        <Card.Title><strong>Nome da Rota: </strong>{rotaData.Nome_Rota}</Card.Title>
-        <Card.Text><strong>Descrição da Rota: </strong>{rotaData.Descricao_Rota}</Card.Text>
-        <Row xs="auto" className="d-flex justify-content-end">
-          <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
-          <Button variant="outline-danger" className="ms-3" onClick={props.removeRota}>Apagar</Button>
-        </Row>
-      </Card>
-      <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
+    <Modal show={props.isUpdated} onHide={() => props.setIsUpdated(false)}>
+
+     
         <Modal.Header>
-          <Modal.Title>Editar Rota</Modal.Title>
+          <Modal.Title>
+          Editar Rota: Nome - {props.rota.Nome_Rota},
+                    Descrição - {props.rota.Descricao_Rota}
+
+          </Modal.Title>
+       
         </Modal.Header>
         <Form noValidate onSubmit={handleSubmit(editRota)} validated={!!errors}>
           <Modal.Body>
+           
             <Input
               className="mb-3"
               type="text"
@@ -73,11 +66,14 @@ export function Rota(props) {
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" type="submit">Editar</Button>
-            <Button variant="secondary" onClick={() => setIsUpdated(false)}>Fechar</Button>
+            <Button variant="primary" type="submit" onClick={editRota}>Editar</Button>
+            <Button variant="secondary" onClick={() => props.setIsUpdated(false)}>Fechar</Button>
+
+           
+         
           </Modal.Footer>
         </Form>
       </Modal>
-    </>
+
   );
 }

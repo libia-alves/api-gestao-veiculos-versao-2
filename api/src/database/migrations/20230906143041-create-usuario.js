@@ -25,7 +25,7 @@ module.exports = {
         allowNull: false,
       },
       Celular: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       CPF: {
