@@ -19,7 +19,7 @@ export function Escolas() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState([]);
-  const id = sessionStorage.getItem ('id');
+  const id = sessionStorage.getItem('id');
   const [successMessage, setSuccessMessage] = useState("");  // Defini useState para erro e sucesso
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -30,16 +30,16 @@ export function Escolas() {
     // eslint-disable-next-line
   }, []);
 
-async function findUsers() {
-  try {
-    const result = await getUsers(id);
-    setUser(result.data);
-    console.log(result.data)
-  } catch (error) {
-    console.error(error);
-    
+  async function findUsers() {
+    try {
+      const result = await getUsers(id);
+      setUser(result.data);
+      console.log(result.data)
+    } catch (error) {
+      console.error(error);
+
+    }
   }
-}
 
 
   async function findEscolas() {
@@ -53,27 +53,31 @@ async function findUsers() {
     }
   }
 
-  async function filtrarEscola(escolaString){
-    if (escolaString.length > 0){
+  async function filtrarEscola(escolaString) {
+    if (escolaString.length > 0) {
       console.log(escolaString.length)
-    const resultadosFiltrados = escolas.filter(objeto => objeto.Nome.includes(escolaString));
-    setEscolas(resultadosFiltrados);
-    }else{
+      const resultadosFiltrados = escolas.filter(objeto => objeto.Nome.includes(escolaString));
+      setEscolas(resultadosFiltrados);
+    } else {
       findEscolas();
     }
   }
 
   async function removeEscola(id) {
-    try {
-      await deleteEscola(id);
-      alert("Cadastro deletado com sucesso!");
-      await findEscolas();
-    } catch (error) {
-      console.error(error);
-      alert("Erro: " + error.response.data.error);
+    const answer = window.confirm(
+      "Tem certeza que deseja excluir este horário?"
+    );
+    if (answer) {
+      try {
+        await deleteEscola(id);
+        alert("Escola deletada com sucesso!");
+        await findEscolas();
+        debugger;
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
-
   async function addEscola(data) {
     try {
       await createEscola(data);
@@ -104,7 +108,7 @@ async function findUsers() {
     }
   }
 
-  
+
 
 
 
@@ -113,7 +117,7 @@ async function findUsers() {
 
 
 
-    <Container fluid>    
+    <Container fluid>
 
 
 
@@ -134,11 +138,11 @@ async function findUsers() {
       <Row className="w-50 m-auto mb-5 mt-5">
 
         <Col md='8'>
-          <Form.Control 
-          type="text" 
-          onChange={(e) => {filtrarEscola(e.target.value)}}></Form.Control>
+          <Form.Control
+            type="text"
+            onChange={(e) => { filtrarEscola(e.target.value) }}></Form.Control>
         </Col>
-        <Col md='4'>          
+        <Col md='4'>
           <Button onClick={() => setIsCreated(true)}>Adicionar Nova Escola</Button>
         </Col>
         {/* Botão de sair aqui */}
@@ -245,7 +249,7 @@ async function findUsers() {
               })}
             />
 
-           
+
 
             <FormSelect
               aria-label="Selecione o gestor"

@@ -222,7 +222,7 @@ function Dashboard() {
                   <Card.Body>
                     <ReactApexChart
                       options={tipoVeiculoOptions}
-                      series={[1, 2]}
+                      series={[1, 1]}
                       type="donut"
                       height={270}
                     />
@@ -241,7 +241,7 @@ function Dashboard() {
                     <VeiculosChart veiculos={veiculos} />
 
                     <h5>Gráfico 2</h5>
-                    <p>Conteúdo do gráfico 2</p>
+                    <p> Numeros de placa e suas repetições </p>
                   </Card.Body>
                 </Card>
                 {/* Renderize as informações da tabela Veículo aqui usando o estado "veiculos" */}
@@ -258,7 +258,7 @@ function Dashboard() {
               <Card.Body>
                 <ReactApexChart options={options} series={[{ data: Object.values(horariosData) }]} type="line" width={1000} height={250} />
                 <h5>Horários</h5>
-                <p>Conteúdo do gráfico 3</p>
+                <p> Frequencia para verificação dos horários de pico</p>
               </Card.Body>
             </Card>
           </Col>

@@ -1,4 +1,6 @@
 .white-text {
     color: white;
   }
-  
+  .blue-background {
+    background-color: blue; /* Defina a cor de fundo desejada (por exemplo, azul) */
+  }

@@ -53,18 +53,22 @@ export function Login() {
                 noValidate
                 validated={!!errors}
                 onSubmit={handleSubmit(onSubmit)}
-                className="bg-light rounded p-5 shadow w-50 m-auto"
+                className="bg-light rounded p-5 shadow w-50 m-auto blue-background"
             >
                 <Col>
 
                 <h6 style={{ textAlign: "center" }}>
-  Seja bem vindo ao site de gestão de veículos escolares!
-</h6>
+  Seja bem vindo </h6>
+ 
+
                 <Header title="Login
                 
                 "className="white-text" /> 
+                 
+                <h6 style={{ textAlign: "center" }}>
+  Gestão de veículos escolares </h6>
                 <Header> </Header>
-                
+              
                     <Input
                         className="mb-4"
                         label="E-mail"

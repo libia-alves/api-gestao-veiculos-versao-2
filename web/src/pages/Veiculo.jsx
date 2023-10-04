@@ -19,6 +19,9 @@ export function Veiculos() {
   const [isCreated, setIsCreated] = useState(false);
   const { handleSubmit, register, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const [confirmDeleteModal, setConfirmDeleteModal] = useState(false); // State para modal de confirmação
+  const [deleteVeiculoId, setDeleteVeiculoId] = useState(null); // Armazenar o ID do veículo a ser excluído
+
 
 
 
@@ -86,12 +89,21 @@ export function Veiculos() {
 
 
   async function removeVeiculo(data) {
-    try {
-      await deleteVeiculo(data.id);
-      alert("Cadastro deletado com sucesso!");
-      await findVeiculos();
-    } catch (error) {
-      console.error(error);
+    setDeleteVeiculoId(data.id); // Armazenar o ID do veículo a ser excluído
+    setConfirmDeleteModal(true); // Mostrar o modal de confirmação
+  }
+
+  async function confirmDelete() {
+    if (deleteVeiculoId !== null) {
+      try {
+        await deleteVeiculo(deleteVeiculoId);
+        setConfirmDeleteModal(false); // Fechar o modal de confirmação
+        setDeleteVeiculoId(null); // Limpar o ID do veículo excluído
+        alert("Cadastro deletado com sucesso!");
+        await findVeiculos();
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -189,13 +201,13 @@ export function Veiculos() {
       </Row>
 
       <Col className="w-50 m-auto">
-        {veiculos && veiculos.length > 0 ? 
+      {veiculos && veiculos.length > 0 ? 
           veiculos.map((veiculo, index) => (
             <Veiculo
-            key={index}
-            veiculo={veiculo}
-            removeVeiculo={removeVeiculo}
-            editVeiculo={editVeiculo}
+              key={index}
+              veiculo={veiculo}
+              removeVeiculo={removeVeiculo}
+              editVeiculo={editVeiculo}
           />
         ))
         : <p className="text-center">Não existe nenhuma veiculo cadastrado!</p>}
@@ -374,8 +386,28 @@ export function Veiculos() {
             <Button variant="primary" type="submit">Adicionar</Button>
             <Button variant="secondary" onClick={() => setIsCreated(false)}>Fechar</Button>
           </Modal.Footer>
+
         </Form>
       </Modal>
+
+ {/* Modal de confirmação de exclusão */}
+ <Modal show={confirmDeleteModal} onHide={() => setConfirmDeleteModal(false)}>
+        <Modal.Header>
+          <Modal.Title>Confirmação de Exclusão</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Tem certeza de que deseja excluir este veículo?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={confirmDelete}>Confirmar Exclusão</Button>
+          <Button variant="secondary" onClick={() => setConfirmDeleteModal(false)}>Cancelar</Button>
+        </Modal.Footer>
+      </Modal>
+
+
+
+
+
     </Container>
   );
 }
