@@ -384,6 +384,7 @@ import { useForm } from "react-hook-form";
 import { EditHorario } from "../components/Horario";
 import { Header } from "../components/Header";
 import { Input } from "../components/Input";
+import { ModalComponent } from "../components/Modal";
 
 import {
     createHorario,
@@ -397,6 +398,9 @@ export function Horarios() {
     const [horarioSelecionado, setHorarioSelecionado] = useState({});
     const [isCreated, setIsCreated] = useState(false);
     const [isUpdated, setIsUpdated] = useState(false);
+
+
+  const [result, setResult] = useState(null);
 
     const {
         handleSubmit,
@@ -447,22 +451,30 @@ export function Horarios() {
         }
     }
 
+    
+
     async function removeHorario(id) {
         const answer = window.confirm(
-            "Tem certeza que deseja excluir este horário?"
+          "Tem certeza que deseja excluir este horário?"
         );
-
         if (answer) {
-            try {
-                await deleteHorario(id);
-                alert("Cadastro deletado com sucesso!");
-                await findHorarios();
-                debugger;
-            } catch (error) {
-                console.error(error);
-            }
+          try {
+            await deleteHorario(id);
+            alert("horario deletado com sucesso!");
+            await findHorarios();
+          } catch (error) {
+            setResult({
+              title: 'Houve um erro na deletação!',
+              message: error.response.data.error,
+            });
+          }
         }
-    }
+      }
+    
+    
+
+
+
 
     async function addHorario(data) {
         try {
@@ -492,6 +504,14 @@ export function Horarios() {
 
     return (
         <Container fluid>
+       <ModalComponent
+        show={result}
+        title={result?.title}
+        message={result?.message}
+        handleClose={() => setResult(null)}
+      />
+
+
             <Header title="Horários" />
             <Row className="w-50 m-auto mb-5 mt-5">
                 <Col md="8">
@@ -508,7 +528,7 @@ export function Horarios() {
                 </Col>
             </Row>
 
-            <Col className="w-75 m-auto">
+            <Col className="w-50 m-auto">
                 <Table striped bordered hover>
                     <thead>
                         <tr>

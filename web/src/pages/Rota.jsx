@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from "react";
 import { Container, Button, Modal, Form, Row, Col, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +8,7 @@ import { EditRota } from "../components/Rota";
 import { Header } from "../components/Header";
 import { Input } from '../components/Input';
 import { createRota, deleteRota, getRotas, updateRota } from "../services/rota-service";
-
+import { ModalComponent } from "../components/Modal";
 
 
 export function Rotas() {
@@ -17,6 +19,9 @@ export function Rotas() {
   const [isCreated, setIsCreated] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
 
+
+  const [result, setResult] = useState(null);
+  const [result1, setResult1] = useState(null);
 
 
   useEffect(() => {
@@ -35,20 +40,52 @@ export function Rotas() {
   }
 
   async function removeRota(id) {
-    try {
-      await deleteRota(id);
-      alert("rota deletada com sucesso!");
-      await findRotas();
-    } catch (error) {
-      console.error(error);
+    const answer = window.confirm(
+      "Tem certeza que deseja excluir este horário?"
+    );
+    if (answer) {
+      try {
+        await deleteRota(id);
+        alert("rota deletada com sucesso!");
+        await findRotas();
+      } catch (error) {
+        setResult({
+          title: 'Houve um erro na deletação!',
+          message: error.response.data.error,
+        });
+      }
     }
   }
+
+
+  //   async function removeHorario(id) {
+  //     const answer = window.confirm(
+  //         "Tem certeza que deseja excluir este horário?"
+  //     );
+
+  //     if (answer) {
+  //         try {
+  //             await deleteHorario(id);
+  //             alert("Cadastro deletado com sucesso!");
+  //             await findHorarios();
+  //             debugger;
+  //         } catch (error) {
+  //             console.error(error);
+  //         }
+  //     }
+  // }
+
+
+
+
+
+
 
   async function addRota(data) {
     try {
       await createRota(data);
       setIsCreated(false);
-      
+
       alert("rota feita com sucesso!");
       await findRotas();
     } catch (error) {
@@ -57,7 +94,7 @@ export function Rotas() {
   }
 
   async function editRota(data) {
-    
+
     try {
       await updateRota({
         id: data.id,
@@ -92,6 +129,12 @@ export function Rotas() {
   return (
 
     <Container fluid>
+      <ModalComponent
+        show={result}
+        title={result?.title}
+        message={result?.message}
+        handleClose={() => setResult(null)}
+      />
       <Header title="Rotas" />
       <Row className="w-50 m-auto mb-5 mt-5">
 
@@ -229,3 +272,5 @@ export function Rotas() {
     </Container>
   );
 }
+
+
