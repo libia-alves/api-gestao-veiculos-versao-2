@@ -70,19 +70,40 @@ export function ProfilePage() {
     });
   };
 
+
+
+//   return (
+//     <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
+//       <Container className="py-6 vh-100 justify-content-center align-items-center">
+//         <Row>
+//           <Col lg="12" className="mb-5 mb-lg-0 mx-auto">
+//             <Card className="mb-3" style={{ borderRadius: '.5rem', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', padding: '60px'}}>
+//               {/* ... restante do código permanece igual */}
+//             </Card>
+//           </Col>
+//         </Row>
+//       </Container>
+//     </section>
+//   );
+// }
+
+
   return (
     <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
-      <Container className="py-5 h-100">
+      <Container className="py-6 vh-100">
         <Row className="justify-content-center align-items-center h-100">
-          <Col lg="10" className="mb-4 mb-lg-0">
-          <Card className="mb-3" style={{ borderRadius: '.5rem', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', padding: '30px'}}>
+          <Col lg="13" className="mb-5 mb-lg-0">
+          <Card className="mb-3" style={{ borderRadius: '.5rem', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', padding: '60px'}}>
               <Row className="g-0">
                 <Col
                   md="4"
-                  className="gradient-custom text-center text-white"
+                  className="gradient-custom text-center text-white text-right"
                   style={{
                     borderTopLeftRadius: '.5rem',
                     borderBottomLeftRadius: '.5rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center', 
                   }}
                 >
                   

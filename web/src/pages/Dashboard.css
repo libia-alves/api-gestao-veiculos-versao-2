@@ -3,13 +3,14 @@
     display: flex;
     align-items: right;
     min-height: 50vh;
-  
+    margin-top: 20px;
 
   }
   
   /* Desloque-o para o lado direito usando margem esquerda */
   .dashboard-container {
     margin-left: auto; /* Isso empurra o conteúdo para a direita */
+    
   }
   
   /* Adicione margem superior para o conteúdo */
